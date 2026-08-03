@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import { getDisclosure, filterCapabilities, validateEnquiry } from '../dist/assets/lib.js';import { capabilities } from '../dist/assets/data.js';
+test('requires disclosure for illustrative assets',()=>{assert.equal(getDisclosure({kind:'illustrative'}),'Ilustrační fotografie — nejde o doloženou realizaci BAUREKO.');assert.equal(getDisclosure({kind:'verified'}),null)});
+test('filters registered capability',()=>{const result=filterCapabilities(capabilities,'metalwork');assert.equal(result.length,1);assert.equal(result[0].id,'metalwork')});
+test('rejects incomplete corporate enquiry',()=>{const e=validateEnquiry({});assert.ok(e.organisation&&e.projectType&&e.email)});
+test('accepts complete corporate enquiry',()=>{assert.deepEqual(validateEnquiry({organisation:'Investor s.r.o.',ico:'12345678',contact:'Jan Novak',email:'jan@example.cz',phone:'+420777111222',projectType:'Reconstruction',location:'Prague',phase:'Tender',budget:'5m',deadline:'2026-12-01',message:'Complete reconstruction of an occupied commercial building.'}),{})});
